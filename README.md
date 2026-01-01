@@ -4,7 +4,7 @@ A personal finance tracking dashboard that visualizes my income, expenses, and s
 
 ## Project Overview
 
-This project documents my financial journey for the entire year of 2025, tracking every transaction across two of my main (currently) payment methods (Cash and GCash). The goal is to understand my spending habits, identify areas for improvement, and make more informed financial decisions.
+This project documents my financial journey for the entire year of 2025, tracking every transaction across different payment methods (Cash and GCash). The goal is to understand my spending habits, identify areas for improvement, and make more informed financial decisions.
 
 **Note:** Income and savings totals have been anonymized for privacy. Only expense data is fully disclosed in this dashboard.
 
@@ -20,6 +20,8 @@ This project documents my financial journey for the entire year of 2025, trackin
 
 View the interactive dashboard here: [Financial Footprint 2025 Dashboard](https://lookerstudio.google.com/reporting/3c46f591-0af3-4c54-b431-cc96472198c8)
 
+Alternative view: [Report View](https://lookerstudio.google.com/s/r0a8XmICdRY)
+
 ## Dataset Structure
 
 The dataset (`TimelyBills_Statement_Report_1 Jan 2025_31 Dec 2025`) contains four tabs:
@@ -29,17 +31,15 @@ The dataset (`TimelyBills_Statement_Report_1 Jan 2025_31 Dec 2025`) contains fou
 3. **Cash + GCash** - Combined view of all transactions
 4. **Savings** - Savings tracking data
 
-### Sample Data Format
+### Sample Dataset
 
-| Date | Amount | Income | Expense | Category |
-|------|--------|--------|---------|----------|
-| Jan-4 | +₱500.00 | 500 | 0 | Allowance |
-| Jan-6 | -₱43.00 | 0 | 43 | Public Transport |
-| Jan-6 | -₱42.00 | 0 | 42 | Fast food |
+![Sample Dataset](docs/1-sample-dataset.png)
 
-### Data Processing Formulas
+The raw data exported from TimelyBills includes Date, Amount (with + or - prefix), and Category columns. Positive amounts indicate income while negative amounts represent expenses.
 
-To separate income and expenses into individual columns:
+### Data Processing
+
+To separate income and expenses into individual columns, I used these Google Sheets formulas:
 
 **Income Column (Column C):**
 ```
@@ -51,132 +51,215 @@ To separate income and expenses into individual columns:
 =IF(LEFT(B2,1)="-",VALUE(REGEXREPLACE(B2,"[₱+,-]","")),"0")
 ```
 
-These formulas check if the amount starts with a "+" or "-" sign and extract only the numeric value without currency symbols.
+These formulas check if the amount starts with a "+" or "-" sign and extract only the numeric value without currency symbols or punctuation.
+
+### Processed Dataset
+
+![Imported Dataset](docs/2-imported-dataset.png)
+
+After applying the formulas, the dataset now has separate Income and Expense columns with clean numeric values, making it easier to analyze and visualize in Looker Studio.
+
+## Dashboard Setup
+
+### Data Sources
+
+![Data Sources](docs/3-data-sources.png)
+
+The dashboard connects to four Google Sheets data sources:
+- **Cash + GCash** - Powers 7 charts showing overall spending patterns
+- **Savings** - Reserved for future savings analysis
+- **Cash on Hand** - Powers 3 charts for cash-only transactions
+- **GCash** - Powers 3 charts for digital wallet transactions
+
+### Field Configuration
+
+![Fields and Data Types](docs/4-fields-data-types.png)
+
+Each data source contains:
+- **Dimensions:** Amount, Category, Date, Expense, Income, Notes
+- **Metrics:** Record Count
+- All currency fields are set to Philippine Peso (₱) format with Sum aggregation
 
 ## Dashboard Components
 
-### Key Metrics
+### Overview and Key Metrics
 
-The dashboard displays six key performance indicators:
+![Dashboard Overview](docs/5-dashboard-overview.png)
 
-- **Days Tracked (222)** - Number of days with recorded transactions
+The dashboard header displays six key performance indicators:
+
+- **Days Tracked (222)** - Number of days with recorded transactions out of 365 days
 - **Total Transactions (989)** - All income and expense entries combined
 - **Total Expenses (₱87,150.48)** - Sum of all spending across the year
 - **Avg Daily Expense (₱117.61)** - Average spending per active day
-- **Total Cash Expenses (₱61,885.90)** - Spending using physical cash (71%)
-- **Total GCash Expenses (₱25,264.58)** - Spending using digital wallet (29%)
+- **Total Cash Expenses (₱61,885.90)** - Spending using physical cash (71% of total)
+- **Total GCash Expenses (₱25,264.58)** - Spending using digital wallet (29% of total)
 
-### Cash Flow Trends Over Time
+The Cash Flow Trends Over Time chart shows daily income (green) and expenses (red) throughout the year, revealing spending patterns and income frequency.
 
-A line chart showing daily income (green) and expenses (red) throughout the year. Key observations:
+### Overall Income and Spending Analysis
 
-- Most days show moderate spending between ₱100-500
-- Notable income spikes in November-December (likely allowances or bonuses)
-- Expense patterns are relatively consistent with occasional large purchases
-- The chart reveals gaps where no transactions were recorded (days not tracked)
+![Income and Spending Breakdown](docs/6-dashboard-overview.png)
 
-### Top 10 Income Sources
+**Top 10 Income Sources:**
+- Allowance dominates at 47.3%, followed by Transfer (24.6%) and Bonus (13%)
+- Shows heavy reliance on regular allowances for income
 
-Shows where money comes from, with Allowance being the primary source (47.3%), followed by Transfer (24.6%) and Bonus (13%).
+**Top 10 Spending Categories:**
+- Transfer (26.7%) - Largest expense, likely savings or money sent to others
+- Snacks (16.4%) - Second biggest category, indicating frequent small purchases
+- Public Transport (13.1%) - Daily commute costs
+- Fast food (9%) and Drink & Dine (8.3%) - Combined 17.3% on food outside home
 
-### Top 10 Spending Categories
+### Cash Transaction Analysis
 
-Reveals spending distribution across categories:
+![Cash Transactions](docs/7-dashboard-overview.png)
 
-- **Transfer (26.7%)** - Largest expense category, likely money sent to savings or others
-- **Snacks (16.4%)** - Second biggest spending area
-- **Public Transport (13.1%)** - Daily commute expenses
-- **Fast food (9%)** - Dining out costs
-- **Drink & Dine (8.3%)** - Restaurant and beverage expenses
+**Cash Income Sources:**
+- Heavily concentrated with Allowance at 68.5%
+- Transfer and other sources make up the remaining portion
 
-### Payment Method Breakdown
+**Cash Spending:**
+- Transfer (28%) - Largest cash expense
+- Snacks (16.8%) - Frequent small purchases paid in cash
+- Public Transport (13.5%) - Daily commute typically paid in cash
+- Fast food (9.8%) - Many food vendors accept only cash
 
-Four donut charts compare spending patterns between Cash and GCash:
+Cash remains the primary payment method for daily essentials like transportation, snacks, and small food purchases.
 
-**Cash Transactions:**
-- Dominated by Allowance income (68.5%)
-- Main expenses: Transfer (28%), Snacks (16.8%), Public Transport (13.5%)
+### GCash Transaction Analysis
 
-**GCash Transactions:**
-- More diverse income sources: Transfer (35.6%), Bonus (24.5%)
-- Top expenses: Others (34.8%), Shopping (14.7%), Mobile Data (11.5%)
-- Shows higher usage for online purchases and digital services
+![GCash Transactions](docs/8-dashboard-overview.png)
+
+**GCash Income Sources:**
+- More diversified: Transfer (35.6%), Bonus (24.5%), Salary & Paycheck (16.5%)
+- Shows digital payments are used for receiving various income types
+
+**GCash Spending:**
+- Others (34.8%) - Miscellaneous digital purchases
+- Shopping (14.7%) - Online shopping and retail
+- Mobile Data (11.5%) - Phone bills and data loads
+- Health & Beauty (9%) - Personal care products
+
+GCash usage reflects modern spending habits, with emphasis on online shopping, digital services, and subscription payments.
 
 ## Key Insights and Analysis
 
 ### Spending Habits
 
-1. **Payment Method Preference:** Cash remains the primary payment method (71% of expenses), suggesting reliance on physical money for daily transactions like transport and food.
+1. **Payment Method Preference** - Cash accounts for 71% of expenses (₱61,885.90), indicating continued reliance on physical money for daily transactions. GCash is used primarily for online purchases and digital services.
 
-2. **Category Concentration:** The top 3 categories (Transfer, Snacks, Public Transport) account for over 56% of all spending, indicating concentrated expenses in specific areas.
+2. **Category Concentration** - The top 3 categories (Transfer, Snacks, Public Transport) represent 56.2% of all spending, showing concentrated expenses in specific areas.
 
-3. **Daily Spending Pattern:** An average of ₱117.61 per active day suggests moderate daily expenses, though this excludes non-tracked days.
+3. **Food-Related Expenses** - Combined spending on Snacks (16.4%), Fast food (9%), and Drink & Dine (8.3%) totals 33.7%, nearly one-third of all expenses. This presents the biggest opportunity for savings.
 
-4. **GCash Usage:** Digital payments are primarily used for online shopping, mobile data, and subscriptions, reflecting modern spending habits.
+4. **Tracking Consistency** - Only 222 out of 365 days were tracked (60.8%), suggesting room for improvement in daily logging habits.
 
 ### Areas for Improvement
 
-1. **Snacks Spending (16.4%)** - This is a significant discretionary expense that could be reduced through meal planning or bringing homemade snacks.
+1. **Reduce Discretionary Food Spending (33.7% of expenses)**
+   - Snacks and dining out are significant expenses that could be reduced
+   - Consider meal planning and bringing homemade snacks
+   - Set a weekly budget for eating out
 
-2. **Fast Food & Dining (17.3% combined)** - Restaurant expenses present an opportunity for savings by cooking at home more frequently.
+2. **Clarify Transfer Category (26.7%)**
+   - This is the largest expense but unclear what it represents
+   - Break down into specific subcategories (savings, bills, loans, gifts)
+   - Better categorization will provide clearer insights
 
-3. **Tracking Consistency** - Only 222 out of 365 days were tracked (60.8%). More consistent logging would provide better insights.
+3. **Improve Tracking Consistency**
+   - 143 days without recorded transactions
+   - Daily tracking would provide more accurate patterns
+   - Consider setting daily reminders in TimelyBills app
+
+4. **Optimize Payment Methods**
+   - Explore cashback or rewards programs for GCash
+   - Use digital payments where possible to automatically track expenses
+   - Maintain small cash reserves for vendors who don't accept digital payments
 
 ### Financial Goals and Recommendations
 
-**Short-term goals:**
-- Reduce snack spending by 20% through conscious consumption
-- Increase home-cooked meals to lower fast food expenses
-- Track expenses daily to avoid missing data points
+**Short-term Goals (1-3 months):**
+- Reduce snack spending by 20% through conscious consumption and meal prep
+- Track expenses daily to avoid gaps in data
+- Set weekly spending limits for discretionary categories
+- Review and recategorize "Transfer" expenses for better clarity
 
-**Long-term goals:**
-- Build an emergency fund equivalent to 3-6 months of expenses
-- Optimize payment method usage to maximize cashback or rewards
+**Medium-term Goals (3-6 months):**
+- Reduce overall food expenses (snacks + dining) by 25%
+- Increase GCash usage to 40% of transactions for better tracking
+- Build a comprehensive budget based on identified spending patterns
+- Identify and eliminate unnecessary subscriptions or recurring charges
+
+**Long-term Goals (6-12 months):**
+- Build an emergency fund equivalent to 3 months of average expenses (₱26,145)
+- Reduce total monthly expenses by 15% through conscious spending
 - Diversify income sources beyond allowances
+- Achieve 90%+ tracking consistency (330+ days logged)
 
-**Action items:**
-- Set weekly spending limits for discretionary categories (snacks, dining)
-- Review and categorize "Transfer" expenses to understand where money actually goes
-- Consider meal prep on weekends to reduce weekday food expenses
-- Enable automatic transaction logging in TimelyBills for better consistency
+**Action Items:**
+- Enable automatic transaction import if available in TimelyBills
+- Create a weekly meal plan to reduce fast food purchases
+- Bring homemade snacks to avoid impulse purchases
+- Set up GCash cashback or rewards programs
+- Review expenses weekly to stay accountable
+- Break down large categories into specific subcategories for better insights
 
-## Repository Structure
+## Technical Implementation
 
-```
-financial-footprint-25/
-├── README.md
-├── data/
-│   └── TimelyBills_Statement_Report_1_Jan_2025_31_Dec_2025.xlsx
-├── images/
-│   ├── dashboard-overview.png
-│   ├── cash-flow-chart.png
-│   └── spending-breakdown.png
-└── looker-studio/
-    └── dashboard-link.txt
-```
+### Google Sheets Setup
+
+The data processing workflow:
+
+1. Export transaction data from TimelyBills app to Excel format
+2. Import into Google Sheets with Date, Amount, and Category columns
+3. Apply income formula in Column C: `=IF(LEFT(B2,1)="+",VALUE(REGEXREPLACE(B2,"[₱+,-]","")),"0")`
+4. Apply expense formula in Column D: `=IF(LEFT(B2,1)="-",VALUE(REGEXREPLACE(B2,"[₱+,-]","")),"0")`
+5. Create separate sheets for Cash on Hand, GCash, Cash + GCash, and Savings
+6. Connect all sheets to Looker Studio as reusable data sources
+
+### Looker Studio Configuration
+
+Dashboard components:
+
+- **Scorecards (6)** - Days Tracked, Total Transactions, Total Expenses, Avg Daily Expense, Total Cash Expenses, Total GCash Expenses
+- **Line Chart (1)** - Cash Flow Trends Over Time with dual axis for Income and Expense
+- **Donut Charts (6)** - Two for overall breakdown, two for Cash, two for GCash
+- **Date Range Control** -  Allows filtering by custom date ranges
+- **Blended Data** - Combines multiple sheets for comprehensive analysis
 
 ## Future Improvements
 
-- Implement monthly budget tracking and variance analysis
-- Add year-over-year comparison when 2026 data becomes available
-- Create predictive models for future spending patterns
-- Integrate with banking APIs for automatic transaction imports
-- Add savings rate tracking and goal progress visualization
+- **Monthly Budget Tracking** - Add budget limits per category and track variance
+- **Predictive Analytics** - Use historical data to forecast future spending
+- **Savings Rate Visualization** - Track savings percentage over time
+- **Year-over-Year Comparison** - Compare 2025 data with future years
+- **Automated Data Impor:** - Explore API integration with TimelyBills for real-time updates
+- **Mobile Dashboard** - Create mobile-optimized version for on-the-go monitoring
+- **Category Refinement** - Break down broad categories like "Transfer" and "Others" into specific subcategories
+- **Goal Progress Tracker** - Visual indicators for savings goals and spending targets
 
-## Privacy Note
+## Privacy and Data Security
 
-This dashboard is designed for portfolio demonstration purposes. Income totals and savings amounts have been anonymized to protect personal financial information. All expense data shown is actual and unmodified.
+Income totals and savings amounts have been anonymized to protect personal financial information. All expense data shown is actual and unmodified to provide authentic insights into spending patterns.
+
+The dataset file is not included in this repository to maintain privacy. Only screenshots and documentation are provided.
+
+## Lessons Learned
+
+1. **Consistent tracking is crucial** - Gaps in data make analysis less reliable
+2. **Categorization matters** - Generic categories like "Transfer" hide important details
+3. **Small expenses add up** - Snacks and coffee represent significant spending
+4. **Cash vs digital tracking** - Digital payments are easier to track automatically
+5. **Visual dashboards provide clarity** - Seeing spending patterns visually drives behavioral change
 
 ## Connect
 
-- GitHub: [github.com/ludreinsalvador](https://github.com/ludreinsalvador)
-- Dashboard: [View Live Dashboard](https://lookerstudio.google.com/reporting/3c46f591-0af3-4c54-b431-cc96472198c8)
-- Report View: [Alternative Dashboard View](https://lookerstudio.google.com/s/r0a8XmICdRY)
-
-## License
-
-This project is open source and available for educational purposes. Feel free to fork and adapt it for your own financial tracking needs.
+- **Dashboard:** [View Live Dashboard](https://lookerstudio.google.com/reporting/3c46f591-0af3-4c54-b431-cc96472198c8)
+- **Report View:** [Alternative Dashboard View](https://lookerstudio.google.com/s/r0a8XmICdRY)
 
 ---
 
 **Last Updated:** January 2, 2026
+
+**Project Status:** Active - Dashboard updated with year-end 2025 data
