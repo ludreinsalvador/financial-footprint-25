@@ -243,7 +243,7 @@ Dashboard components:
 
 Income totals and savings amounts have been anonymized to protect personal financial information. All expense data shown is actual and unmodified to provide authentic insights into spending patterns.
 
-The dataset file is not included in this repository to maintain privacy. Only screenshots and documentation are provided.
+The dataset file is not included in this repository to maintain privacy. Only screenshots, demo datasets, and documentation are provided.
 
 ## Lessons Learned
 
@@ -263,3 +263,4 @@ The dataset file is not included in this repository to maintain privacy. Only sc
 **Last Updated:** January 2, 2026
 
 **Project Status:** Active - Dashboard updated with year-end 2025 data
+
