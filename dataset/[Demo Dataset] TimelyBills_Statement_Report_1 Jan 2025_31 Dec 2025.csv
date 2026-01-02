@@ -1,0 +1,10 @@
+Date ,Amount,Income,Expense,Category 
+Jan-4,+₱500.00,500,0,Allowance
+Jan-6,-₱43.00,0,43,Public Transport
+Jan-6,-₱42.00,0,42,Fast food
+Jan-7,-₱70.00,0,70,Public Transport
+Jan-7,-₱62.00,0,62,Coffee shops
+Jan-8,+₱250.00,250,0,Allowance
+Jan-8,-₱42.00,0,42,Public Transport
+Jan-8,-₱241.00,0,241,Fast food
+Jan-8,-₱62.00,0,62,Coffee shops
