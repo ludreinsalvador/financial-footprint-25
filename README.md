@@ -143,7 +143,7 @@ Cash remains the primary payment method for daily essentials like transportation
 
 GCash usage reflects modern spending habits, with emphasis on online shopping, digital services, and subscription payments.
 
-## Key Insights and Analysis
+## My Insights and Analysis
 
 ### Spending Habits
 
@@ -170,10 +170,8 @@ GCash usage reflects modern spending habits, with emphasis on online shopping, d
 3. **Improve Tracking Consistency**
    - 143 days without recorded transactions
    - Daily tracking would provide more accurate patterns
-   - Consider setting daily reminders in TimelyBills app
 
 4. **Optimize Payment Methods**
-   - Explore cashback or rewards programs for GCash
    - Use digital payments where possible to automatically track expenses
    - Maintain small cash reserves for vendors who don't accept digital payments
 
@@ -182,14 +180,12 @@ GCash usage reflects modern spending habits, with emphasis on online shopping, d
 **Short-term Goals (1-3 months):**
 - Reduce snack spending by 20% through conscious consumption and meal prep
 - Track expenses daily to avoid gaps in data
-- Set weekly spending limits for discretionary categories
 - Review and recategorize "Transfer" expenses for better clarity
 
 **Medium-term Goals (3-6 months):**
 - Reduce overall food expenses (snacks + dining) by 25%
 - Increase GCash usage to 40% of transactions for better tracking
 - Build a comprehensive budget based on identified spending patterns
-- Identify and eliminate unnecessary subscriptions or recurring charges
 
 **Long-term Goals (6-12 months):**
 - Build an emergency fund equivalent to 3 months of average expenses (₱26,145)
@@ -198,10 +194,7 @@ GCash usage reflects modern spending habits, with emphasis on online shopping, d
 - Achieve 90%+ tracking consistency (330+ days logged)
 
 **Action Items:**
-- Enable automatic transaction import if available in TimelyBills
-- Create a weekly meal plan to reduce fast food purchases
 - Bring homemade snacks to avoid impulse purchases
-- Set up GCash cashback or rewards programs
 - Review expenses weekly to stay accountable
 - Break down large categories into specific subcategories for better insights
 
@@ -245,7 +238,7 @@ Income totals and savings amounts have been anonymized to protect personal finan
 
 The dataset file is not included in this repository to maintain privacy. Only screenshots, demo datasets, and documentation are provided.
 
-## Lessons Learned
+## What I Learned from my Financial Footprint
 
 1. **Consistent tracking is crucial** - Gaps in data make analysis less reliable
 2. **Categorization matters** - Generic categories like "Transfer" hide important details
@@ -263,4 +256,3 @@ The dataset file is not included in this repository to maintain privacy. Only sc
 **Last Updated:** January 2, 2026
 
 **Project Status:** Active - Dashboard updated with year-end 2025 data
-
